@@ -1,5 +1,5 @@
 const s3 = require("./s3");
-const {successResponse, errorResponse} = require("../src/response");
+const { successResponse, errorResponse } = require("../src/response");
 const im = require('imagemagick');
 const fs = require('fs');
 const os = require('os');
@@ -9,7 +9,14 @@ const getFile = (imageBucket, objectKey, reject) => s3.getFileFromBucket(imageBu
 
 exports.original = (imageBucket, objectKey) => new Promise((resolve, reject) =>
 
-    getFile(imageBucket, objectKey, reject).then(data => resolve(successResponse(data.Body.toString('base64'), 'image/jpeg'))));
+    getFile(imageBucket, objectKey, reject).then(data => {
+        const resBody = data.Body.toString('base64');
+        if (resBody.length > 6 * 1024 * 1024) {
+            exports.resize(imageBucket, objectKey, 2400).then(resolve).catch(reject);
+            return;
+        }
+        resolve(successResponse(resBody, 'image/jpeg'));
+    }));
 
 exports.resize = (imageBucket, objectKey, width, height) => new Promise((resolve, reject) =>
 
