@@ -11,7 +11,7 @@ module.exports = {
         path: __dirname + '/dist',
         filename: 'index.js',
         library: 'index',
-        libraryTarget: 'umd'
+        libraryTarget: 'umd',
     },
     target: "node",
     externals: [
@@ -19,6 +19,9 @@ module.exports = {
         "aws-sdk",
         "imagick"
     ],
+    optimization: {
+        minimize: false
+    },
     module: {
         /**
          * Tell webpack how to load 'json' files.
