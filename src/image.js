@@ -12,7 +12,7 @@ exports.original = (imageBucket, objectKey) => new Promise((resolve, reject) =>
     getFile(imageBucket, objectKey, reject).then(data => {
         const resBody = data.Body.toString('base64');
         if (resBody.length > 6 * 1024 * 1024) {
-            exports.resize(imageBucket, objectKey, 2400).then(resolve).catch(reject);
+            exports.resize(imageBucket, objectKey, 2560).then(resolve).catch(reject);
             return;
         }
         resolve(successResponse(resBody, 'image/jpeg'));
